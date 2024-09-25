@@ -67,7 +67,7 @@ pub trait NearestNeighbour: std::fmt::Debug + Send + Sync + Unpin {
     ///
     /// Returns an error if the points have dimensionality of 0 or if the leaf size is 0. If any
     /// value in the batch is NaN or infinite, the behaviour is unspecified.
-    fn from_batch_with_leaf_size<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,
@@ -76,7 +76,7 @@ pub trait NearestNeighbour: std::fmt::Debug + Send + Sync + Unpin {
 
     /// Builds a spatial index using a default leaf size. See `from_batch_with_leaf_size` for more
     /// information.
-    fn from_batch<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn from_batch<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         dist_fn: D,
@@ -125,7 +125,7 @@ pub trait NearestNeighbourIndex<F: Float>: Send + Sync + Unpin {
 /// use rand_xoshiro::Xoshiro256Plus;
 /// use ndarray_rand::{rand::SeedableRng, rand_distr::Uniform, RandomExt};
 /// use ndarray::{Array1, Array2};
-/// use linfa_nn::{distance::*, CommonNearestNeighbour, NearestNeighbour};
+/// use kn0sys_nn::{distance::*, CommonNearestNeighbour, NearestNeighbour};
 ///
 /// // Use seedable RNG for generating points
 /// let mut rng = Xoshiro256Plus::seed_from_u64(40);
@@ -160,7 +160,7 @@ pub enum CommonNearestNeighbour {
 }
 
 impl NearestNeighbour for CommonNearestNeighbour {
-    fn from_batch_with_leaf_size<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,

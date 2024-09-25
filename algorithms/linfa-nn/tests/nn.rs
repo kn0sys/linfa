@@ -1,11 +1,10 @@
 use approx::assert_abs_diff_eq;
-use ndarray::{arr1, arr2, aview1, stack, Array2, ArrayBase, ArrayView1, Axis, Dim, ViewRepr};
-use ndarray_rand::{rand::SeedableRng, rand_distr::Uniform, RandomExt};
+use ndarray::{arr1, arr2, aview1, stack, Array, Array2, ArrayBase, ArrayView1, Axis, Dim, ViewRepr};
+use ndarray_rand::{rand_distr::Uniform, RandomExt};
 use ndarray_stats::DeviationExt;
 use noisy_float::{checkers::FiniteChecker, NoisyFloat};
-use rand_xoshiro::Xoshiro256Plus;
 
-use linfa_nn::{distance::*, CommonNearestNeighbour, LinearSearch, NearestNeighbour};
+use kn0sys_nn::{distance::*, CommonNearestNeighbour, LinearSearch, NearestNeighbour};
 
 fn sort_by_dist<'a>(
     mut vec: Vec<(ArrayView1<'a, f64>, usize)>,
@@ -137,11 +136,9 @@ fn nn_test_random<D: 'static + Distance<f64> + Clone>(
     builder: &CommonNearestNeighbour,
     dist_fn: D,
 ) {
-    let mut rng = Xoshiro256Plus::seed_from_u64(40);
     let n_points = 50000;
     let n_features = 3;
-    let points = Array2::random_using((n_points, n_features), Uniform::new(-50., 50.), &mut rng);
-
+    let points = Array::random((n_points, n_features), Uniform::new(-50., 50.));
     let linear = LinearSearch::new()
         .from_batch(&points, dist_fn.clone())
         .unwrap();

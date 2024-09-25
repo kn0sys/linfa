@@ -90,7 +90,7 @@ enum BallTreeInner<'a, F: Float> {
     },
 }
 
-impl<'a, F: Float> BallTreeInner<'a, F> {
+impl<'a, F: Float + ndarray::ScalarOperand> BallTreeInner<'a, F> {
     fn new<D: Distance<F>>(
         points: Vec<(Point<'a, F>, usize)>,
         leaf_size: usize,
@@ -167,7 +167,7 @@ pub struct BallTreeIndex<'a, F: Float, D: Distance<F>> {
     len: usize,
 }
 
-impl<'a, F: Float, D: Distance<F>> BallTreeIndex<'a, F, D> {
+impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> BallTreeIndex<'a, F, D> {
     /// Creates a `BallTreeIndex` using the K-D construction algorithm
     pub fn new<DT: Data<Elem = F>>(
         batch: &'a ArrayBase<DT, Ix2>,
@@ -260,7 +260,7 @@ impl<'a, F: Float, D: Distance<F>> BallTreeIndex<'a, F, D> {
     }
 }
 
-impl<'a, F: Float, D: Distance<F>> NearestNeighbourIndex<F> for BallTreeIndex<'a, F, D> {
+impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> NearestNeighbourIndex<F> for BallTreeIndex<'a, F, D> {
     fn k_nearest<'b>(
         &self,
         point: Point<'b, F>,
@@ -302,7 +302,7 @@ impl BallTree {
 }
 
 impl NearestNeighbour for BallTree {
-    fn from_batch_with_leaf_size<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,
