@@ -30,9 +30,9 @@ impl<'a, F: Float, D: Distance<F>> LinearSearchIndex<'a, F, D> {
 }
 
 impl<'a, F: Float, D: Distance<F>> NearestNeighbourIndex<F> for LinearSearchIndex<'a, F, D> {
-    fn k_nearest<'b>(
+    fn k_nearest(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         k: usize,
     ) -> Result<Vec<(Point<F>, usize)>, NnError> {
         if self.0.ncols() != point.len() {
@@ -53,9 +53,9 @@ impl<'a, F: Float, D: Distance<F>> NearestNeighbourIndex<F> for LinearSearchInde
         }
     }
 
-    fn within_range<'b>(
+    fn within_range(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         range: F,
     ) -> Result<Vec<(Point<F>, usize)>, NnError> {
         if self.0.ncols() != point.len() {
@@ -93,7 +93,7 @@ impl LinearSearch {
 }
 
 impl NearestNeighbour for LinearSearch {
-    fn from_batch_with_leaf_size<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn batch_with_leaf_size<'a, F: Float, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,

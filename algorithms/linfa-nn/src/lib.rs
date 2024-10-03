@@ -67,7 +67,7 @@ pub trait NearestNeighbour: std::fmt::Debug + Send + Sync + Unpin {
     ///
     /// Returns an error if the points have dimensionality of 0 or if the leaf size is 0. If any
     /// value in the batch is NaN or infinite, the behaviour is unspecified.
-    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,
@@ -76,12 +76,12 @@ pub trait NearestNeighbour: std::fmt::Debug + Send + Sync + Unpin {
 
     /// Builds a spatial index using a default leaf size. See `from_batch_with_leaf_size` for more
     /// information.
-    fn from_batch<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn batch<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         dist_fn: D,
     ) -> Result<NearestNeighbourBox<'a, F>, BuildError> {
-        self.from_batch_with_leaf_size(batch, 2usize.pow(4), dist_fn)
+        self.batch_with_leaf_size(batch, 2usize.pow(4), dist_fn)
     }
 }
 
@@ -96,9 +96,9 @@ pub trait NearestNeighbourIndex<F: Float>: Send + Sync + Unpin {
     ///
     /// Returns an error if the provided point has different dimensionality than the index's
     /// points.
-    fn k_nearest<'b>(
+    fn k_nearest(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         k: usize,
     ) -> Result<Vec<(Point<F>, usize)>, NnError>;
 
@@ -108,9 +108,9 @@ pub trait NearestNeighbourIndex<F: Float>: Send + Sync + Unpin {
     ///
     /// Returns an error if the provided point has different dimensionality than the index's
     /// points.
-    fn within_range<'b>(
+    fn within_range(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         range: F,
     ) -> Result<Vec<(Point<F>, usize)>, NnError>;
 }
@@ -135,7 +135,7 @@ pub trait NearestNeighbourIndex<F: Float>: Send + Sync + Unpin {
 /// let points = Array2::random_using((5000, n_features), distr, &mut rng);
 ///
 /// // Build a K-D tree with Euclidean distance as the distance function
-/// let nn = CommonNearestNeighbour::KdTree.from_batch(&points, L2Dist).unwrap();
+/// let nn = CommonNearestNeighbour::KdTree.batch(&points, L2Dist).unwrap();
 ///
 /// let pt = Array1::random_using(n_features, distr, &mut rng);
 /// // Compute the 10 nearest points to `pt` in the index
@@ -160,16 +160,16 @@ pub enum CommonNearestNeighbour {
 }
 
 impl NearestNeighbour for CommonNearestNeighbour {
-    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,
         dist_fn: D,
     ) -> Result<NearestNeighbourBox<'a, F>, BuildError> {
         match self {
-            Self::LinearSearch => LinearSearch.from_batch_with_leaf_size(batch, leaf_size, dist_fn),
-            Self::KdTree => KdTree.from_batch_with_leaf_size(batch, leaf_size, dist_fn),
-            Self::BallTree => BallTree.from_batch_with_leaf_size(batch, leaf_size, dist_fn),
+            Self::LinearSearch => LinearSearch.batch_with_leaf_size(batch, leaf_size, dist_fn),
+            Self::KdTree => KdTree.batch_with_leaf_size(batch, leaf_size, dist_fn),
+            Self::BallTree => BallTree.batch_with_leaf_size(batch, leaf_size, dist_fn),
         }
     }
 }

@@ -29,7 +29,7 @@ fn assert_query(
 
 fn nn_test_empty(builder: &CommonNearestNeighbour) {
     let points = Array2::zeros((0, 2));
-    let nn = builder.from_batch(&points, L2Dist).unwrap();
+    let nn = builder.batch(&points, L2Dist).unwrap();
 
     let out = nn.k_nearest(aview1(&[0.0, 1.0]), 2).unwrap();
     assert_eq!(out, Vec::<_>::new());
@@ -44,20 +44,20 @@ fn nn_test_empty(builder: &CommonNearestNeighbour) {
 
 fn nn_test_error(builder: &CommonNearestNeighbour) {
     let points = Array2::<f64>::zeros((4, 0));
-    assert!(builder.from_batch(&points, L2Dist).is_err());
+    assert!(builder.batch(&points, L2Dist).is_err());
 
     let points = arr2(&[[0.0, 2.0]]);
     assert!(builder
-        .from_batch_with_leaf_size(&points, 0, L2Dist)
+        .batch_with_leaf_size(&points, 0, L2Dist)
         .is_err());
-    let nn = builder.from_batch(&points, L2Dist).unwrap();
+    let nn = builder.batch(&points, L2Dist).unwrap();
     assert!(nn.k_nearest(aview1(&[]), 2).is_err());
     assert!(nn.within_range(aview1(&[2.2, 4.4, 5.5]), 4.0).is_err());
 }
 
 fn nn_test(builder: &CommonNearestNeighbour, sort_within_range: bool) {
     let points = arr2(&[[0.0, 2.0], [10.0, 4.0], [4.0, 5.0], [7.0, 1.0], [1.0, 7.2]]);
-    let nn = builder.from_batch(&points, L2Dist).unwrap();
+    let nn = builder.batch(&points, L2Dist).unwrap();
 
     let out = nn.k_nearest(aview1(&[0.0, 1.0]), 2).unwrap();
     assert_query(out, &points, vec![0, 2]);
@@ -78,7 +78,7 @@ fn nn_test(builder: &CommonNearestNeighbour, sort_within_range: bool) {
 
 fn nn_test_degenerate(builder: &CommonNearestNeighbour) {
     let points = arr2(&[[0.0, 2.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0]]);
-    let nn = builder.from_batch(&points, L2Dist).unwrap();
+    let nn = builder.batch(&points, L2Dist).unwrap();
 
     let out = nn
         .k_nearest(aview1(&[0.0, 1.0]), 2)
@@ -140,10 +140,10 @@ fn nn_test_random<D: 'static + Distance<f64> + Clone>(
     let n_features = 3;
     let points = Array::random((n_points, n_features), Uniform::new(-50., 50.));
     let linear = LinearSearch::new()
-        .from_batch(&points, dist_fn.clone())
+        .batch(&points, dist_fn.clone())
         .unwrap();
 
-    let nn = builder.from_batch(&points, dist_fn).unwrap();
+    let nn = builder.batch(&points, dist_fn).unwrap();
 
     let pt = arr1(&[0., 0., 0.]);
     assert_eq_queries(

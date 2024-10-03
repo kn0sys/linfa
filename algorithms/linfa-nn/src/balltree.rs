@@ -196,9 +196,9 @@ impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> BallTreeIndex<'a, F,
         }
     }
 
-    fn nn_helper<'b>(
+    fn nn_helper(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         k: usize,
         max_radius: F,
     ) -> Result<Vec<(Point<F>, usize)>, NnError> {
@@ -261,17 +261,17 @@ impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> BallTreeIndex<'a, F,
 }
 
 impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> NearestNeighbourIndex<F> for BallTreeIndex<'a, F, D> {
-    fn k_nearest<'b>(
+    fn k_nearest(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         k: usize,
     ) -> Result<Vec<(Point<F>, usize)>, NnError> {
         self.nn_helper(point, k, F::infinity())
     }
 
-    fn within_range<'b>(
+    fn within_range(
         &self,
-        point: Point<'b, F>,
+        point: Point<'_, F>,
         range: F,
     ) -> Result<Vec<(Point<F>, usize)>, NnError> {
         let range = self.dist_fn.dist_to_rdist(range);
@@ -302,7 +302,7 @@ impl BallTree {
 }
 
 impl NearestNeighbour for BallTree {
-    fn from_batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
+    fn batch_with_leaf_size<'a, F: Float + ndarray::ScalarOperand, DT: Data<Elem = F>, D: 'a + Distance<F>>(
         &self,
         batch: &'a ArrayBase<DT, Ix2>,
         leaf_size: usize,
