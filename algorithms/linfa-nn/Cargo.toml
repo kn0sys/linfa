@@ -1,6 +1,6 @@
 [package]
 name = "kn0sys-nn"
-version = "0.8.2"
+version = "0.8.3"
 authors = ["YuhanLiin <yuhanliin+github@protonmail.com>, Nigel Christian <nigel.christian@hiahatf.org>"]
 edition = "2021"
 description = "A collection of nearest neighbour algorithms"
