@@ -50,7 +50,7 @@ impl From<kdtree::ErrorKind> for NnError {
     }
 }
 
-impl<'a, F: Float, D: Distance<F>> NearestNeighbourIndex<F> for KdTreeIndex<'a, F, D> {
+impl<F: Float, D: Distance<F>> NearestNeighbourIndex<F> for KdTreeIndex<'_, F, D> {
     fn k_nearest(
         &self,
         point: Point<'_, F>,

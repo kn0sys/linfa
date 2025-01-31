@@ -29,7 +29,7 @@ impl<'a, F: Float, D: Distance<F>> LinearSearchIndex<'a, F, D> {
     }
 }
 
-impl<'a, F: Float, D: Distance<F>> NearestNeighbourIndex<F> for LinearSearchIndex<'a, F, D> {
+impl<F: Float, D: Distance<F>> NearestNeighbourIndex<F> for LinearSearchIndex<'_, F, D> {
     fn k_nearest(
         &self,
         point: Point<'_, F>,

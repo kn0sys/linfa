@@ -260,7 +260,7 @@ impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> BallTreeIndex<'a, F,
     }
 }
 
-impl<'a, F: Float + ndarray::ScalarOperand, D: Distance<F>> NearestNeighbourIndex<F> for BallTreeIndex<'a, F, D> {
+impl<F: Float + ndarray::ScalarOperand, D: Distance<F>> NearestNeighbourIndex<F> for BallTreeIndex<'_, F, D> {
     fn k_nearest(
         &self,
         point: Point<'_, F>,
