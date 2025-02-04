@@ -1,17 +1,18 @@
 [package]
 name = "linfa"
-version = "0.7.0"
+version = "0.8.0"
 authors = [
     "Luca Palmieri <rust@lpalmieri.com>",
     "Lorenz Schmidt <bytesnake@mailbox.org>",
     "Paul Körbitz <koerbitz@google.com>",
     "Yuhan Lin <yuhanliin@protonmail.com>",
+    "n12n"
 ]
 description = "A Machine Learning framework for Rust"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 
-repository = "https://github.com/rust-ml/linfa"
+repository = "https://github.com/kn0sys/linfa"
 readme = "README.md"
 
 keywords = ["machine-learning", "linfa", "ai", "ml"]
@@ -37,7 +38,7 @@ serde = ["serde_crate", "ndarray/serde"]
 
 [dependencies]
 num-traits = "0.2"
-rand = { version = "0.8", features = ["small_rng"] }
+rand = { version = "0.9", features = ["small_rng"] }
 approx = "0.4"
 
 ndarray = { version = "0.16.1", features = ["approx"] }

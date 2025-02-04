@@ -1,0 +1,3 @@
+[submodule "ndarray"]
+	path = ndarray
+	url = https://github.com/kn0sys/ndarray

@@ -40,7 +40,7 @@ approx = "0.5.1"
 criterion = "0.5.1"
 rand_xoshiro = "0.7"
 ndarray-rand = "0.15"
-linfa = { version = "0.7.0", path = "../..", features = ["benchmarks"] }
+linfa = { version = "0.8.0", path = "../..", features = ["benchmarks"] }
 
 [[bench]]
 name = "nn"
