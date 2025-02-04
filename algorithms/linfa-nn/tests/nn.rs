@@ -138,7 +138,7 @@ fn nn_test_random<D: 'static + Distance<f64> + Clone>(
 ) {
     let n_points = 50000;
     let n_features = 3;
-    let points = Array::random((n_points, n_features), Uniform::new(-50., 50.));
+    let points = Array::random((n_points, n_features), Uniform::new(-50., 50.).unwrap());
     let linear = LinearSearch::new()
         .batch(&points, dist_fn.clone())
         .unwrap();

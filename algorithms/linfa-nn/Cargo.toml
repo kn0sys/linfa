@@ -1,6 +1,6 @@
 [package]
 name = "kn0sys-nn"
-version = "0.8.4"
+version = "0.9.0"
 authors = ["YuhanLiin <yuhanliin+github@protonmail.com>, Nigel Christian <nigel.christian@hiahatf.org>"]
 edition = "2021"
 description = "A collection of nearest neighbour algorithms"
@@ -24,8 +24,8 @@ default-features = false
 features = ["std", "derive"]
 
 [dependencies]
-ndarray = { version = "0.16.1", features = ["approx"]}
-ndarray-stats = "0.6"
+ndarray = { package = "kn0sys_ndarray", version = "0.17.0", features = ["approx"]}
+ndarray-stats = { package = "kn0sys-ndarray-stats", version = "0.7.0"}
 num-traits = "0.2.0"
 noisy_float = "0.2.0"
 order-stat = "0.1.3"
@@ -39,8 +39,8 @@ linfa = { version = "0.7.0", path = "../.." }
 approx = "0.5.1"
 criterion = "0.5.1"
 rand_xoshiro = "0.7"
-ndarray-rand = "0.15"
-linfa = { version = "0.8.0", path = "../..", features = ["benchmarks"] }
+ndarray-rand = { package = "kn0sys_ndarray_rand", version = "0.16.0"}
+linfa = { version = "0.7.0", path = "../..", features = ["benchmarks"] }
 
 [[bench]]
 name = "nn"

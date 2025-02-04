@@ -130,7 +130,7 @@ pub trait NearestNeighbourIndex<F: Float>: Send + Sync + Unpin {
 /// // Use seedable RNG for generating points
 /// let mut rng = Xoshiro256Plus::seed_from_u64(40);
 /// let n_features = 3;
-/// let distr = Uniform::new(-500., 500.);
+/// let distr = Uniform::new(-500., 500.).unwrap();
 /// // Randomly generate points for building the index
 /// let points = Array2::random_using((5000, n_features), distr, &mut rng);
 ///
