@@ -68,7 +68,7 @@ fn p_values<F: Float, D: Data<Elem = F>>(
     }
 
     let mut p_values = Array1::zeros(n * (n - 1) / 2);
-    let mut rng = SmallRng::from_entropy();
+    let mut rng = SmallRng::from_rng(&mut rand::rng());
 
     // calculate p-values by shuffling features `num_iter` times
     for _ in 0..num_iter {

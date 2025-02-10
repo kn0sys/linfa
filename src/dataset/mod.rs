@@ -11,7 +11,7 @@ use ndarray::{
 use ndarray_linalg::{Lapack, Scalar};
 
 use num_traits::{AsPrimitive, FromPrimitive, NumCast, Signed};
-use rand::distributions::uniform::SampleUniform;
+use rand::distr::uniform::SampleUniform;
 
 use std::cmp::{Ordering, PartialOrd};
 use std::collections::{HashMap, HashSet};
